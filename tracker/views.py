@@ -5,10 +5,15 @@ from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404, JsonResponse
 from django.http.response import HttpResponseBase
+from django.shortcuts import render
 from django.utils import timezone
 from django.views.generic import View
 
 from .models import Game
+
+
+def index(request):
+    return render(request, "index.html", {"games": Game.objects.all(),})
 
 
 class APIView(View):

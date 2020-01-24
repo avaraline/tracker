@@ -1,0 +1,32 @@
+{% load i18n %}
+
+<!doctype html>
+<html>
+<head>
+    <title>{% trans "Avara Tracker" %}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+</head>
+<body>
+    <div class="container">
+        <h1>{% trans "Avara Tracker" %}</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>{% trans "Address" %}</th>
+                    <th>{% trans "Players" %}</th>
+                    <th>{% trans "Last Seen" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for game in games %}
+                    <tr>
+                        <td>{{ game.address }}:{{ game.port }}</td>
+                        <td>{{ game.players|linebreaksbr }}</td>
+                        <td>{{ game.last_seen }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
