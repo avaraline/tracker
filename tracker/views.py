@@ -1,18 +1,16 @@
-import datetime
 import json
 
-from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404, JsonResponse
 from django.http.response import HttpResponseBase
 from django.shortcuts import render
-from django.utils import timezone
 from django.views.generic import View
 
 from .models import Game
 
 
 def index(request):
+    Game.prune()
     return render(request, "index.html", {"games": Game.objects.all(),})
 
 
@@ -43,12 +41,8 @@ class GamesAPI(APIView):
         except Exception:
             return self.request.META["REMOTE_ADDR"]
 
-    def prune(self):
-        cutoff = timezone.now() - datetime.timedelta(seconds=settings.TRACKER_PRUNE_SECONDS)
-        Game.objects.filter(last_seen__lt=cutoff).delete()
-
     def get(self, request, *args, **kwargs):
-        self.prune()
+        Game.prune()
         return {
             "games": [g.to_dict() for g in Game.objects.all()],
         }

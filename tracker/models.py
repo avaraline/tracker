@@ -1,3 +1,6 @@
+import datetime
+
+from django.conf import settings
 from django.db import models
 from django.utils import timezone
 
@@ -14,6 +17,11 @@ class Game(models.Model):
         unique_together = [
             ("address", "port"),
         ]
+
+    @classmethod
+    def prune(cls):
+        cutoff = timezone.now() - datetime.timedelta(seconds=settings.TRACKER_PRUNE_SECONDS)
+        cls.objects.filter(last_seen__lt=cutoff).delete()
 
     def update(self, data):
         self.last_seen = timezone.now()
