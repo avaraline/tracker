@@ -12,6 +12,8 @@ class Game(models.Model):
     last_seen = models.DateTimeField(default=timezone.now)
     players = models.TextField(blank=True)
     description = models.TextField(blank=True)
+    password = models.BooleanField(default=False)
+
 
     class Meta:
         unique_together = [
@@ -27,6 +29,8 @@ class Game(models.Model):
         self.last_seen = timezone.now()
         self.players = "\n".join(data.get("players", []))
         self.description = data.get("description", "")
+        self.password = data.get("password", "")
+
         self.save()
 
     def to_dict(self, **extra):
@@ -37,5 +41,6 @@ class Game(models.Model):
             "last_seen": self.last_seen.isoformat(),
             "players": [p.strip() for p in self.players.split("\n") if p.strip()],
             "description": self.description.strip(),
+            "password": self.password,
             **extra,
         }
