@@ -13,7 +13,9 @@
             <thead>
                 <tr>
                     <th>{% trans "Address" %}</th>
+                    <th>{% trans "Message" %}</th>
                     <th>{% trans "Players" %}</th>
+                    <th style="width:50px">{% trans "Password" %}</th>
                     <th>{% trans "Last Seen" %}</th>
                 </tr>
             </thead>
@@ -21,7 +23,9 @@
                 {% for game in games %}
                     <tr>
                         <td>{{ game.address }}:{{ game.port }}</td>
+                        <td>{{ game.description }}</td>
                         <td>{{ game.players|linebreaksbr }}</td>
+                        <td>{{ game.password|default:"" }}</td>
                         <td>{{ game.last_seen }}</td>
                     </tr>
                 {% endfor %}
