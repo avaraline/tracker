@@ -67,7 +67,7 @@ class GamesAPI(APIView):
                 settings.TRACKER_DISCORD_WEBHOOK,
                 json={
                     "username": "Tracker",
-                    "content": "<@&{}> {} is hosting at {}: {}".format(
+                    "content": "<@&{}> {} is hosting at {} - *{}*".format(
                         settings.TRACKER_DISCORD_ROLE_ID,
                         game.players.split("\n")[0],
                         game.address,
