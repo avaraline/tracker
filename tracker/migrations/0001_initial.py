@@ -14,7 +14,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name="Game",
             fields=[
-                ("id", models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
                 ("address", models.GenericIPAddressField()),
                 ("port", models.IntegerField()),
                 ("first_seen", models.DateTimeField(default=django.utils.timezone.now)),
@@ -22,6 +30,8 @@ class Migration(migrations.Migration):
                 ("players", models.TextField(blank=True)),
                 ("description", models.TextField(blank=True)),
             ],
-            options={"unique_together": {("address", "port")},},
+            options={
+                "unique_together": {("address", "port")},
+            },
         ),
     ]

@@ -1,5 +1,7 @@
 import json
 
+import requests
+from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404, JsonResponse
 from django.http.response import HttpResponseBase
@@ -11,14 +13,22 @@ from .models import Game
 
 def index(request):
     Game.prune()
-    return render(request, "index.html", {"games": Game.objects.all(),})
+    return render(
+        request,
+        "index.html",
+        {
+            "games": Game.objects.all(),
+        },
+    )
 
 
 class APIView(View):
     @property
     def json(self):
         if not hasattr(self, "_json_cache"):
-            self._json_cache = json.loads(self.request.body) if self.request.body else {}
+            self._json_cache = (
+                json.loads(self.request.body) if self.request.body else {}
+            )
         return self._json_cache
 
     def dispatch(self, request, *args, **kwargs):
@@ -48,6 +58,21 @@ class GamesAPI(APIView):
         }
 
     def post(self, request, *args, **kwargs):
-        game, created = Game.objects.get_or_create(address=self.request_ip, port=int(self.json.get("port", 19567)))
+        game, created = Game.objects.get_or_create(
+            address=self.request_ip, port=int(self.json.get("port", 19567))
+        )
         game.update(self.json)
+        if created and settings.TRACKER_DISCORD_WEBHOOK:
+            requests.post(
+                settings.TRACKER_DISCORD_WEBHOOK,
+                json={
+                    "username": "Tracker",
+                    "content": "<@&{}> {} is hosting at {}: {}".format(
+                        settings.TRACKER_DISCORD_ROLE_ID,
+                        game.players.split("\n")[0],
+                        game.address,
+                        game.description,
+                    ),
+                },
+            )
         return game.to_dict()

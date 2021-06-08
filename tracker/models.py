@@ -14,7 +14,6 @@ class Game(models.Model):
     description = models.TextField(blank=True)
     password = models.BooleanField(default=False)
 
-
     class Meta:
         unique_together = [
             ("address", "port"),
@@ -22,7 +21,9 @@ class Game(models.Model):
 
     @classmethod
     def prune(cls):
-        cutoff = timezone.now() - datetime.timedelta(seconds=settings.TRACKER_PRUNE_SECONDS)
+        cutoff = timezone.now() - datetime.timedelta(
+            seconds=settings.TRACKER_PRUNE_SECONDS
+        )
         cls.objects.filter(last_seen__lt=cutoff).delete()
 
     def update(self, data):
