@@ -1,6 +1,10 @@
-name: Create and publish a Docker image
+name: Docker Build
 
-on: workflow_dispatch
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: {}
 
 env:
   REGISTRY: ghcr.io

@@ -1,0 +1,6 @@
+__pycache__
+.git
+.vscode
+/db.sqlite3
+/static
+/secret.key
