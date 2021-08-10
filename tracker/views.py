@@ -62,8 +62,11 @@ class GamesAPI(APIView):
             address=self.request_ip, port=int(self.json.get("port", 19567))
         )
         game.update(self.json)
-        notify = created and settings.TRACKER_DISCORD_WEBHOOK
-        notify = notify and (settings.TRACKER_DISCORD_NOTIFY_PASSWORDED or not game.password)
+        notify = (
+            created
+            and settings.TRACKER_DISCORD_WEBHOOK
+            and (settings.TRACKER_DISCORD_NOTIFY_PASSWORDED or not game.password)
+        )
         if notify:
             requests.post(
                 settings.TRACKER_DISCORD_WEBHOOK,
