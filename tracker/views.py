@@ -1,6 +1,5 @@
 import json
 
-import requests
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404, JsonResponse
@@ -61,23 +60,12 @@ class GamesAPI(APIView):
         game, created = Game.objects.get_or_create(
             address=self.request_ip, port=int(self.json.get("port", 19567))
         )
+        existing_msg = game.discord_msg()
         game.update(self.json)
         notify = (
-            created
-            and settings.TRACKER_DISCORD_WEBHOOK
+            settings.TRACKER_DISCORD_WEBHOOK
             and (settings.TRACKER_DISCORD_NOTIFY_PASSWORDED or not game.password)
         )
         if notify:
-            requests.post(
-                settings.TRACKER_DISCORD_WEBHOOK,
-                json={
-                    "username": "Tracker",
-                    "content": "<@&{}> {} is hosting at {} - *{}*".format(
-                        settings.TRACKER_DISCORD_ROLE_ID,
-                        game.players.split("\n")[0],
-                        game.address,
-                        game.description,
-                    ),
-                },
-            )
+            game.handle_notification(existing_msg)
         return game.to_dict()
