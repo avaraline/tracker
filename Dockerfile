@@ -7,8 +7,8 @@ ENV LANG=C.UTF-8 \
     DEBUG=false \
     DATA_DIR=/data
 
-COPY requirements.txt /app/
-RUN pip install --no-cache-dir -Ur /app/requirements.txt
+COPY requirements.lock /app/
+RUN pip install --no-cache-dir -r /app/requirements.lock
 
 COPY . /app
 

@@ -62,9 +62,8 @@ class GamesAPI(APIView):
         )
         existing_msg = game.discord_msg()
         game.update(self.json)
-        notify = (
-            settings.TRACKER_DISCORD_WEBHOOK
-            and (settings.TRACKER_DISCORD_NOTIFY_PASSWORDED or not game.password)
+        notify = settings.TRACKER_DISCORD_WEBHOOK and (
+            settings.TRACKER_DISCORD_NOTIFY_PASSWORDED or not game.password
         )
         if notify:
             game.handle_notification(existing_msg)

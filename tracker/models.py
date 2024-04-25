@@ -34,9 +34,11 @@ class Game(models.Model):
                     continue
                 try:
                     requests.patch(
-                        settings.TRACKER_DISCORD_WEBHOOK + f"/messages/{game.discord_msgid}",
-                        json={ "content": "~~" + game.discord_msg() + "~~" })
-                except:
+                        settings.TRACKER_DISCORD_WEBHOOK
+                        + f"/messages/{game.discord_msgid}",
+                        json={"content": "~~" + game.discord_msg() + "~~"},
+                    )
+                except Exception:
                     pass
 
         cls.objects.filter(last_seen__lt=cutoff).delete()
@@ -96,8 +98,7 @@ class Game(models.Model):
             if existing_msg != new_msg:
                 # update existing message
                 resp = requests.patch(
-                    d_url + f"/messages/{self.discord_msgid}",
-                    json={ "content": new_msg }
+                    d_url + f"/messages/{self.discord_msgid}", json={"content": new_msg}
                 )
 
     def player_list(self):

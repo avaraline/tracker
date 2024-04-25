@@ -1,0 +1,20 @@
+[project]
+name = "tracker"
+version = "1.0.0"
+description = "Tracker server for Avara"
+authors = [
+    { name = "Dan Watson", email = "dcwatson@gmail.com" }
+]
+dependencies = [
+    "django~=4.2.0",
+    "gunicorn>=22.0.0",
+    "requests>=2.31.0",
+    "whitenoise>=6.6.0",
+]
+readme = "README.md"
+requires-python = ">= 3.8"
+
+[tool.rye]
+managed = true
+virtual = true
+dev-dependencies = []

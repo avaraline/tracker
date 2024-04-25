@@ -44,7 +44,7 @@ spec:
             claimName: tracker
       containers:
         - name: tracker
-          image: "ghcr.io/avaraline/tracker"
+          image: "avaraline/tracker"
           imagePullPolicy: Always
           envFrom:
             - configMapRef:

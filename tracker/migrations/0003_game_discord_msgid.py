@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('tracker', '0002_game_password'),
+        ("tracker", "0002_game_password"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='game',
-            name='discord_msgid',
+            model_name="game",
+            name="discord_msgid",
             field=models.TextField(blank=True),
         ),
     ]
